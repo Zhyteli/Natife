@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.test.natife.presentation.navigation.GifNavGraph
 import com.test.natife.presentation.ui.theme.NatifeTESTTheme
 import com.test.natife.presentation.sreens.GiphyScreen
 import dagger.hilt.android.AndroidEntryPoint
@@ -24,24 +25,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             NatifeTESTTheme {
-                GiphyScreen()
+                GifNavGraph()
+
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    NatifeTESTTheme {
-        GiphyScreen()
     }
 }

@@ -54,6 +54,7 @@ android {
 }
 
 dependencies {
+    implementation (libs.androidx.navigation.compose)
 
     kapt (libs.androidx.room.compiler)
     implementation (libs.androidx.room.runtime)
@@ -77,6 +78,7 @@ dependencies {
     // Paging 3 для( постраничной загрузки
     implementation (libs.androidx.paging.runtime)
     implementation (libs.androidx.paging.compose)
+    implementation (libs.accompanist.pager)
 
     implementation (libs.ui)
 

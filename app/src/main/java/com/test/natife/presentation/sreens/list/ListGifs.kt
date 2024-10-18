@@ -33,6 +33,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.wear.compose.material.ContentAlpha
@@ -53,6 +54,7 @@ import com.test.natife.presentation.viewmodels.GiphyViewModel
 @Composable
 fun ListGifs(
     gifs: LazyPagingItems<GifObjectUi>,
+    navController: NavHostController,
     viewModel: GiphyViewModel = hiltViewModel()
 ) {
     LazyVerticalStaggeredGrid(
@@ -65,6 +67,7 @@ fun ListGifs(
                 key(gif.id) {
                     GifItem(
                         gif = gif,
+                        onClick = { navController.navigate("gifDetail/$index") },
                         onLongClick = { viewModel.deleteGif(gif.id) }
                     )
                 }
@@ -76,9 +79,11 @@ fun ListGifs(
                 loadState.refresh is LoadState.Loading -> {
                     item { LoadingItem() }
                 }
+
                 loadState.append is LoadState.Loading -> {
                     item { LoadingItem() }
                 }
+
                 loadState.append is LoadState.Error -> {
                     val e = loadState.append as LoadState.Error
                     item {
@@ -95,7 +100,11 @@ fun ListGifs(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun GifItem(gif: GifObjectUi, onLongClick: () -> Unit) {
+fun GifItem(
+    gif: GifObjectUi,
+    onClick: () -> Unit,
+    onLongClick: () -> Unit
+) {
     val imageUrl = gif.imagesUi.original.url
     val context = LocalContext.current
 
@@ -137,7 +146,7 @@ fun GifItem(gif: GifObjectUi, onLongClick: () -> Unit) {
             .padding(8.dp)
             .fillMaxWidth()
             .combinedClickable(
-                onClick = { /* Можно добавить обработку обычного нажатия */ },
+                onClick = onClick,
                 onLongClick = onLongClick
             )
     ) {
@@ -152,25 +161,6 @@ fun GifItem(gif: GifObjectUi, onLongClick: () -> Unit) {
             )
         }
     }
-}
-
-
-
-@Preview(showBackground = true)
-@Composable
-fun GifItemPreview() {
-    GifItem(
-        GifObjectUi(
-            "555",
-            ImagesUi(
-                OriginalImageUi(
-                    "https://giphy.com/gifs/hallmarkecards-cute-hallmark-shoebox-BzyTuYCmvSORqs1ABM",
-                    "400",
-                    "400"
-                )
-            )
-        )
-    ){}
 }
 
 

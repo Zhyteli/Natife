@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.intl.Locale
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.test.natife.data.models.net.isInternetAvailable
 import com.test.natife.presentation.sreens.list.ListGifs
@@ -24,7 +25,10 @@ import com.test.natife.presentation.ui.theme.spacing
 import com.test.natife.presentation.viewmodels.GiphyViewModel
 
 @Composable
-fun GiphyScreen(viewModel: GiphyViewModel = hiltViewModel()) {
+fun GiphyScreen(
+    navController: NavHostController,
+    viewModel: GiphyViewModel = hiltViewModel()
+) {
     val gifs = viewModel.gifs.collectAsLazyPagingItems()
     var query by remember { mutableStateOf("") }
     val context = LocalContext.current
@@ -41,14 +45,14 @@ fun GiphyScreen(viewModel: GiphyViewModel = hiltViewModel()) {
                     contentDescription = "Search"
                 )
             },
-            onValueChange = { textFieldValue->
-                if (isInternetAvailable(context)){
+            onValueChange = { textFieldValue ->
+                if (isInternetAvailable(context)) {
                     query = textFieldValue.text
                     viewModel.setQuery(textFieldValue.text)
                 }
             }
         )
 
-        ListGifs(gifs)
+        ListGifs(gifs, navController)
     }
 }
