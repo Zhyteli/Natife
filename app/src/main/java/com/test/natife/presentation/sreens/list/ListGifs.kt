@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
@@ -27,6 +28,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -38,6 +40,7 @@ import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.wear.compose.material.ContentAlpha
 import coil.ImageLoader
+import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
@@ -76,14 +79,6 @@ fun ListGifs(
 
         gifs.apply {
             when {
-                loadState.refresh is LoadState.Loading -> {
-                    item { LoadingItem() }
-                }
-
-                loadState.append is LoadState.Loading -> {
-                    item { LoadingItem() }
-                }
-
                 loadState.append is LoadState.Error -> {
                     val e = loadState.append as LoadState.Error
                     item {
@@ -150,7 +145,16 @@ fun GifItem(
                 onLongClick = onLongClick
             )
     ) {
-        Box {
+        Box(
+            contentAlignment = Alignment.Center, // Align loading indicator in the center
+            modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(aspectRatio)
+        ) {
+            if (painter.state is AsyncImagePainter.State.Loading) {
+                CircularProgressIndicator() // Show a loading indicator while the image loads
+            }
+
             Image(
                 painter = painter,
                 contentDescription = null,
@@ -162,13 +166,6 @@ fun GifItem(
         }
     }
 }
-
-
-@Composable
-fun LoadingItem() {
-    CircularProgressIndicator(modifier = Modifier.fillMaxWidth())
-}
-
 @Composable
 fun ErrorItem(message: String, onRetry: () -> Unit) {
     Column(modifier = Modifier.fillMaxWidth()) {

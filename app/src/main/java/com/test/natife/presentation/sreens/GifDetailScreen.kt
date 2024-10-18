@@ -2,7 +2,10 @@ package com.test.natife.presentation.sreens
 
 import android.os.Build.VERSION.SDK_INT
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -16,6 +19,7 @@ import androidx.navigation.NavHostController
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil.ImageLoader
+import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
@@ -38,7 +42,9 @@ fun GifDetailScreen(
     val gifs = viewModel.gifs.collectAsLazyPagingItems()
 
     Box(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .background(MaterialTheme.colorScheme.surfaceVariant)
+            .fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
         HorizontalPager(
@@ -78,15 +84,27 @@ fun GifDetailItem(gif: GifObjectUi) {
         imageLoader = imageLoader
     )
 
-    Image(
-        painter = painter,
-        contentDescription = null,
-        contentScale = ContentScale.Crop,
-        modifier = Modifier
-            .size(
-                height = imageSize.height.toInt().dp,
-                width = imageSize.width.toInt().dp
-            )
-            .padding(16.dp)
-    )
+    Box(
+        contentAlignment = Alignment.Center, // Align loading indicator in the center
+        modifier = Modifier.size(
+            height = imageSize.height.toInt().dp,
+            width = imageSize.width.toInt().dp
+        )
+    ) {
+        if (painter.state is AsyncImagePainter.State.Loading) {
+            CircularProgressIndicator() // Show a loading indicator while the image loads
+        }
+
+        Image(
+            painter = painter,
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .size(
+                    height = imageSize.height.toInt().dp,
+                    width = imageSize.width.toInt().dp
+                )
+                .padding(16.dp)
+        )
+    }
 }

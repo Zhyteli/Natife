@@ -1,6 +1,8 @@
 package com.test.natife.presentation.sreens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -33,7 +35,11 @@ fun GiphyScreen(
     var query by remember { mutableStateOf("") }
     val context = LocalContext.current
 
-    Column {
+    Column(
+        Modifier
+            .background(MaterialTheme.colorScheme.surfaceVariant)
+            .fillMaxSize()
+    ) {
         SearchInTextField(
             text = "",
             modifier = Modifier

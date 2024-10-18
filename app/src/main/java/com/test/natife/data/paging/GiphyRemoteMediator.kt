@@ -47,8 +47,6 @@ class GiphyRemoteMediator(
 
             val gifs = response.data.map { it.toEntity() }
 
-            Log.d("TEST_", response.pagination.toString())
-//            gifDao.clearAllGifs()
             gifDao.insertGifs(gifs) // Use the new function
 
             return MediatorResult.Success(endOfPaginationReached = gifs.isEmpty())

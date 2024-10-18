@@ -1,10 +1,13 @@
 package com.test.natife.presentation.viewmodels
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
+import com.test.natife.data.models.net.isInternetAvailable
 import com.test.natife.domain.usecase.DeleteAllGifUseCase
 import com.test.natife.domain.usecase.DeleteGifUseCase
 import com.test.natife.domain.usecase.GetSearchGifsUseCase
@@ -26,13 +29,15 @@ class GiphyViewModel @Inject constructor(
     private val searchGifsUseCase: GetSearchGifsUseCase,
     private val deleteGifUseCase: DeleteGifUseCase,
     private val deleteAllGifUseCase: DeleteAllGifUseCase,
-) : ViewModel() {
+    private val application: Application
+) : AndroidViewModel(application) {
 
     private val _query = MutableStateFlow("funny cats")
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private val _gifs = _query
         .flatMapLatest { query ->
+            if (isInternetAvailable(application)) deleteAllGifUseCase()
             searchGifsUseCase(query)
         }
         .map { pagingData ->
