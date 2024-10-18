@@ -1,8 +1,14 @@
 package com.test.natife.data.models.base
 
-data class GifObjectData(
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "gifs")
+data class GifObjectEntity(
+    @PrimaryKey
     val id: String,
-    val imagesData: ImagesData
+    val imagesData: ImagesData,
+    val isDeleted: Boolean = false
 )
 
 data class ImagesData(

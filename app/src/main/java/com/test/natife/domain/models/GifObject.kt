@@ -2,7 +2,8 @@ package com.test.natife.domain.models
 
 data class GifObject(
     val id: String,
-    val images: Images
+    val images: Images,
+    val isDeleted: Boolean = false
 )
 
 data class Images(

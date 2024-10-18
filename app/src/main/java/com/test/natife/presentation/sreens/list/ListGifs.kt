@@ -2,7 +2,9 @@ package com.test.natife.presentation.sreens.list
 
 import android.os.Build.VERSION.SDK_INT
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -30,6 +32,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.wear.compose.material.ContentAlpha
@@ -42,10 +45,16 @@ import coil.request.ImageRequest
 import com.test.natife.domain.models.GifObject
 import com.test.natife.domain.models.Images
 import com.test.natife.domain.models.OriginalImage
+import com.test.natife.presentation.models.GifObjectUi
+import com.test.natife.presentation.models.ImagesUi
+import com.test.natife.presentation.models.OriginalImageUi
+import com.test.natife.presentation.viewmodels.GiphyViewModel
 
 @Composable
-fun ListGifs(gifs: LazyPagingItems<GifObject>) {
-    // Оптимизированная LazyGrid с StaggeredGridCells
+fun ListGifs(
+    gifs: LazyPagingItems<GifObjectUi>,
+    viewModel: GiphyViewModel = hiltViewModel()
+) {
     LazyVerticalStaggeredGrid(
         columns = StaggeredGridCells.Fixed(2),
         contentPadding = PaddingValues(8.dp),
@@ -53,9 +62,11 @@ fun ListGifs(gifs: LazyPagingItems<GifObject>) {
     ) {
         items(gifs.itemCount) { index ->
             gifs[index]?.let { gif ->
-                // Используем ключ для уменьшения перерисовок
                 key(gif.id) {
-                    GifItem(gif = gif)
+                    GifItem(
+                        gif = gif,
+                        onLongClick = { viewModel.deleteGif(gif.id) }
+                    )
                 }
             }
         }
@@ -65,11 +76,9 @@ fun ListGifs(gifs: LazyPagingItems<GifObject>) {
                 loadState.refresh is LoadState.Loading -> {
                     item { LoadingItem() }
                 }
-
                 loadState.append is LoadState.Loading -> {
                     item { LoadingItem() }
                 }
-
                 loadState.append is LoadState.Error -> {
                     val e = loadState.append as LoadState.Error
                     item {
@@ -83,12 +92,13 @@ fun ListGifs(gifs: LazyPagingItems<GifObject>) {
     }
 }
 
+
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun GifItem(gif: GifObject) {
-    val imageUrl = gif.images.original.url
+fun GifItem(gif: GifObjectUi, onLongClick: () -> Unit) {
+    val imageUrl = gif.imagesUi.original.url
     val context = LocalContext.current
 
-    // Оптимизация через remember для предотвращения лишних перерисовок
     val imageLoader = remember {
         ImageLoader.Builder(context)
             .components {
@@ -104,20 +114,21 @@ fun GifItem(gif: GifObject) {
     val painter = rememberAsyncImagePainter(
         model = ImageRequest.Builder(context)
             .data(imageUrl)
-            .crossfade(true) // Плавная смена изображений
+            .crossfade(true)
             .build(),
         imageLoader = imageLoader
     )
 
-    // Используем derivedStateOf для уменьшения пересчётов aspectRatio
-    val aspectRatio by remember { derivedStateOf { gif.images.original.width.toFloat() / gif.images.original.height.toFloat() } }
+    val aspectRatio by remember {
+        derivedStateOf {
+            gif.imagesUi.original.width.toFloat() / gif.imagesUi.original.height.toFloat()
+        }
+    }
 
     Card(
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface,
-            contentColor = MaterialTheme.colorScheme.onSurface,
-            disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant,
-            disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = ContentAlpha.disabled)
+            contentColor = MaterialTheme.colorScheme.onSurface
         ),
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
         shape = MaterialTheme.shapes.medium,
@@ -125,6 +136,10 @@ fun GifItem(gif: GifObject) {
         modifier = Modifier
             .padding(8.dp)
             .fillMaxWidth()
+            .combinedClickable(
+                onClick = { /* Можно добавить обработку обычного нажатия */ },
+                onLongClick = onLongClick
+            )
     ) {
         Box {
             Image(
@@ -140,21 +155,22 @@ fun GifItem(gif: GifObject) {
 }
 
 
+
 @Preview(showBackground = true)
 @Composable
 fun GifItemPreview() {
     GifItem(
-        GifObject(
+        GifObjectUi(
             "555",
-            Images(
-                OriginalImage(
+            ImagesUi(
+                OriginalImageUi(
                     "https://giphy.com/gifs/hallmarkecards-cute-hallmark-shoebox-BzyTuYCmvSORqs1ABM",
                     "400",
                     "400"
                 )
             )
         )
-    )
+    ){}
 }
 
 

@@ -1,7 +1,8 @@
 package com.test.natife.di
 
+import com.test.natife.data.database.GifDao
 import com.test.natife.data.network.GiphyApiService
-import com.test.natife.data.network.GiphyRepositoryImpl
+import com.test.natife.data.repositories.GiphyRepositoryImpl
 import com.test.natife.domain.GiphyRepository
 import dagger.Module
 import dagger.Provides
@@ -17,6 +18,7 @@ object RepositoryModule {
     @Singleton
     fun provideGiphyRepository(
         apiService: GiphyApiService,
+        gifDao: GifDao,
         @ApiKey apiKey: String
-    ): GiphyRepository = GiphyRepositoryImpl(apiService, apiKey)
+    ): GiphyRepository = GiphyRepositoryImpl(apiService, gifDao, apiKey)
 }
