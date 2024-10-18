@@ -85,7 +85,7 @@ fun GifDetailItem(gif: GifObjectUi) {
     )
 
     Box(
-        contentAlignment = Alignment.Center, // Align loading indicator in the center
+        contentAlignment = Alignment.Center,
         modifier = Modifier.size(
             height = imageSize.height.toInt().dp,
             width = imageSize.width.toInt().dp

@@ -1,6 +1,5 @@
 package com.test.natife.data.paging
 
-import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
@@ -11,6 +10,28 @@ import com.test.natife.data.models.base.GifObjectEntity
 import com.test.natife.data.network.GiphyApiService
 import retrofit2.HttpException
 import java.io.IOException
+
+/**
+ * GiphyRemoteMediator is a RemoteMediator implementation that handles fetching GIFs
+ * from the Giphy API and caching them into a local database using Paging 3 library.
+ *
+ * This mediator is responsible for deciding when to load data (e.g., refresh, append, prepend),
+ * handling pagination logic, and interacting with both the network layer (Giphy API)
+ * and the local database (GifDao).
+ *
+ * It uses the experimental Paging 3 API's `ExperimentalPagingApi` annotation. The mediator fetches
+ * GIFs based on a search query and stores the results into a Room database for future paging.
+ *
+ * Parameters:
+ * @param apiService - The service interface for making API calls to Giphy.
+ * @param gifDao - The Data Access Object (DAO) for interacting with the local database.
+ * @param apiKey - The API key used to authenticate requests to the Giphy API.
+ * @param query - The search query to fetch GIFs matching the provided keyword(s).
+ *
+ * The load function determines the load type (REFRESH, APPEND, PREPEND) and fetches data accordingly.
+ * If data is successfully fetched, it inserts the GIFs into the local database. In case of errors,
+ * such as network issues (IOException) or API errors (HttpException), appropriate error handling is done.
+ */
 
 @OptIn(ExperimentalPagingApi::class)
 class GiphyRemoteMediator(
