@@ -1,6 +1,9 @@
 ## The basic logic
 The basic logic is that the user can request different Gifs, go to each one in more detail by clicking on it, and also delete elements by holding down
 
+![strem](https://github.com/user-attachments/assets/b7af68e7-f3b5-45b2-a603-7193addc1b71)
+
+
 ## Main Libraries Used
 
 The project utilizes the following main libraries:
