@@ -1,5 +1,6 @@
 package com.test.natife.data.paging
 
+import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
@@ -46,6 +47,8 @@ class GiphyRemoteMediator(
 
             val gifs = response.data.map { it.toEntity() }
 
+            Log.d("TEST_", response.pagination.toString())
+//            gifDao.clearAllGifs()
             gifDao.insertGifs(gifs) // Use the new function
 
             return MediatorResult.Success(endOfPaginationReached = gifs.isEmpty())

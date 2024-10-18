@@ -28,4 +28,7 @@ interface GifDao {
 
     @Query("SELECT * FROM gifs WHERE isDeleted = 0")
     fun getPagingSource(): PagingSource<Int, GifObjectEntity>
+
+    @Query("DELETE FROM gifs")
+    suspend fun clearAllGifs()
 }

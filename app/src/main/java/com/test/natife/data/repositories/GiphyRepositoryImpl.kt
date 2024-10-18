@@ -54,6 +54,10 @@ class GiphyRepositoryImpl @Inject constructor(
     override suspend fun deleteGif(gifId: String) {
         gifDao.markGifAsDeleted(gifId)
     }
+
+    override suspend fun deleteAllGif() {
+        gifDao.clearAllGifs()
+    }
 }
 
 

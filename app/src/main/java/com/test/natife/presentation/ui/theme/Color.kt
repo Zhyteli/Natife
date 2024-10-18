@@ -1,4 +1,4 @@
-package com.test.natife.ui.theme
+package com.test.natife.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

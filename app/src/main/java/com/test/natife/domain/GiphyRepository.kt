@@ -8,4 +8,5 @@ interface GiphyRepository {
     fun getGifsStream(query: String): Flow<PagingData<GifObject>>
     suspend fun saveGif(gif: GifObject)
     suspend fun deleteGif(gifId: String)
+    suspend fun deleteAllGif()
 }

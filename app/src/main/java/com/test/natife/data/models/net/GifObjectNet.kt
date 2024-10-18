@@ -2,11 +2,12 @@ package com.test.natife.data.models.net
 
 data class GifObjectNet(
     val id: String,
-    val imagesNet: ImagesNet
+    val images: ImagesNet,
+    val isDeleted: Boolean = false
 )
 
 data class ImagesNet(
-    val originalImageNet: OriginalImageNet
+    val original: OriginalImageNet
 )
 
 data class OriginalImageNet(

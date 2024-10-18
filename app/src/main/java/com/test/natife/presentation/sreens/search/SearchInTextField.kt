@@ -26,7 +26,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.test.natife.ui.theme.spacing
+import com.test.natife.presentation.ui.theme.spacing
 
 @Composable
 fun SearchInTextField(

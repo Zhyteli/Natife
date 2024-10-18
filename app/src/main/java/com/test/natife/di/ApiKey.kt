@@ -18,5 +18,5 @@ object ApiKeyModule {
     @Provides
     @Singleton
     @ApiKey
-    fun provideApiKey(): String = "bopqh4oG9EcTcBdDd0O02rgLvvJQBU0z"
+    fun provideApiKey(): String = "YGHnKKBGSydS6nSt6WAoUcICWwmgCfvL"
 }
