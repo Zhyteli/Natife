@@ -1,4 +1,4 @@
-package com.test.natife
+package com.test.natife.di
 
 import dagger.Module
 import dagger.Provides

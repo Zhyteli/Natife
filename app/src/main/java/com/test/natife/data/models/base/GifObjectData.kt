@@ -10,5 +10,7 @@ data class ImagesData(
 )
 
 data class OriginalImageData(
-    val url: String
+    val url: String,
+    val height: String,
+    val width: String
 )

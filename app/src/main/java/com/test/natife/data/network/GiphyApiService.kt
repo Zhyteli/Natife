@@ -1,4 +1,4 @@
-package com.test.natife
+package com.test.natife.data.network
 
 import com.test.natife.domain.models.GiphyResponse
 import retrofit2.http.GET

@@ -1,5 +1,8 @@
-package com.test.natife
+package com.test.natife.di
 
+import com.test.natife.data.network.GiphyApiService
+import com.test.natife.data.network.GiphyRepositoryImpl
+import com.test.natife.domain.GiphyRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,6 +18,5 @@ object RepositoryModule {
     fun provideGiphyRepository(
         apiService: GiphyApiService,
         @ApiKey apiKey: String
-    ): GiphyRepository =
-        GiphyRepository(apiService, apiKey)
+    ): GiphyRepository = GiphyRepositoryImpl(apiService, apiKey)
 }

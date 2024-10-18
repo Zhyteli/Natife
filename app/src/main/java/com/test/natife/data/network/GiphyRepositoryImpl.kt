@@ -1,17 +1,21 @@
-package com.test.natife
+package com.test.natife.data.network
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import com.test.natife.di.ApiKey
+import com.test.natife.domain.GiphyRepository
 import com.test.natife.domain.models.GifObject
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
+import javax.inject.Singleton
 
-class GiphyRepository @Inject constructor(
+@Singleton
+class GiphyRepositoryImpl @Inject constructor(
     private val apiService: GiphyApiService,
     @ApiKey private val apiKey: String
-) {
-    fun getGifsStream(query: String): Flow<PagingData<GifObject>> {
+): GiphyRepository {
+    override fun getGifsStream(query: String): Flow<PagingData<GifObject>> {
         return Pager(
             config = PagingConfig(
                 pageSize = 25,

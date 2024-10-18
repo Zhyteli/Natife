@@ -10,5 +10,7 @@ data class ImagesNet(
 )
 
 data class OriginalImageNet(
-    val url: String
+    val url: String,
+    val height: String,
+    val width: String
 )
