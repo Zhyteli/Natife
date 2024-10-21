@@ -25,7 +25,7 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = true
+            isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -69,18 +69,14 @@ dependencies {
     implementation (libs.retrofit)
     implementation (libs.converter.gson)
 
-    // OkHttp для л(огирования
     implementation ("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.14")
 
-    // Coil для заг(рузки изображений
     implementation (libs.coil.compose)
     implementation (libs.coil.gif)
-    // Paging 3 для( постраничной загрузки
+
     implementation (libs.androidx.paging.runtime)
     implementation (libs.androidx.paging.compose)
     implementation (libs.accompanist.pager)
-
-    implementation (libs.ui)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
